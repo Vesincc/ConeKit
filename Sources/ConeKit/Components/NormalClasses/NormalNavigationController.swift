@@ -141,14 +141,7 @@ public extension NormalNavigationController {
 }
 
 extension NormalNavigationController {
-    
-    public func configerWhiteContent() {
-        universalTitleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor.white,
-            NSAttributedString.Key.font : UIFont(pingFang: 18, weight: .medium)
-        ]
-    }
-    
+     
     fileprivate func configerNavigationBar() {
         if #available(iOS 13.0, *) {
             navigationBar.standardAppearance.backgroundEffect = nil
@@ -156,11 +149,6 @@ extension NormalNavigationController {
         } else {
             // Fallback on earlier versions
         }
-        
-        universalTitleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor.init(rgb: 0x333333),
-            NSAttributedString.Key.font : UIFont(pingFang: 18, weight: .medium)
-        ]
         
         if isHideNavigationBarBackground {
             setNavigationBarBarBackgroundHide()

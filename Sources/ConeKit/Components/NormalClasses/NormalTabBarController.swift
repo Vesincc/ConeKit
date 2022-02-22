@@ -127,23 +127,7 @@ extension NormalTabBarController {
         } else {
             // Fallback on earlier versions
         }
-        
-        let shadowGl = CAGradientLayer(colors: [UIColor.clear, UIColor.init(argb: 0x10000000)], locations: [0, 1], startPoint: .init(x: 0.5, y: 0), endPoint: .init(x: 0.5, y: 1))
-        shadowGl.frame = .init(x: 0, y: 0, width: kScreenWidth, height: 3)
-           
-        universalShadowImage = UIImage.init(layer: shadowGl)
-        
-        universalBarTintColor = .white
-        universalNormalTitleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor.init(rgb: 0x999999),
-            NSAttributedString.Key.font : UIFont(name: "PingFangSC-Regular", size: 10)!
-        ]
-        universalSelectedTitleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor.init(rgb: 0x307DFC),
-            NSAttributedString.Key.font : UIFont(name: "PingFangSC-Regular", size: 10)!
-        ]
-        
-        
+         
         if #available(iOS 15.0, *) {
             tabBar.scrollEdgeAppearance = tabBar.standardAppearance
         } else {
