@@ -1,5 +1,5 @@
 //
-//  NormalNavigationController.swift
+//  ConeNavigationController.swift
 //  MyKit
 //
 //  Created by HanQi on 2021/4/6.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-public class NormalNavigationController: UINavigationController {
+public class ConeNavigationController: UINavigationController {
      
     /// 返回图片
     @IBInspectable public var backImage: UIImage?
@@ -62,7 +62,7 @@ public class NormalNavigationController: UINavigationController {
     }
 }
 
-public extension NormalNavigationController {
+public extension ConeNavigationController {
     
     var universalShadowImage: UIImage? {
         get {
@@ -140,7 +140,7 @@ public extension NormalNavigationController {
     
 }
 
-extension NormalNavigationController {
+extension ConeNavigationController {
      
     fileprivate func configerNavigationBar() {
         if #available(iOS 13.0, *) {
@@ -184,15 +184,15 @@ extension NormalNavigationController {
     
 }
 
-extension NormalNavigationController: UIGestureRecognizerDelegate {
+extension ConeNavigationController: UIGestureRecognizerDelegate {
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         children.count > 1
     }
 }
 
-extension NormalNavigationController: UINavigationControllerDelegate {
+extension ConeNavigationController: UINavigationControllerDelegate {
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        guard let navigationController = navigationController as? NormalNavigationController else {
+        guard let navigationController = navigationController as? ConeNavigationController else {
             return
         }
         
@@ -213,7 +213,7 @@ extension NormalNavigationController: UINavigationControllerDelegate {
         if navigationController.children.count > 1 {
             
         } else {
-            if let navigationController = navigationController as? NormalNavigationController {
+            if let navigationController = navigationController as? ConeNavigationController {
                 navigationController.didEnterRootViewController?()
             }
         }

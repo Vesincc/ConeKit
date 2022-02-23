@@ -1,5 +1,5 @@
 //
-//  NormalTabBarController.swift
+//  ConeTabBarController.swift
 //  MyKit
 //
 //  Created by HanQi on 2021/4/6.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class NormalTabBarController: UITabBarController {
+open class ConeTabBarController: UITabBarController {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +42,7 @@ open class NormalTabBarController: UITabBarController {
       
 }
 
-public extension NormalTabBarController {
+public extension ConeTabBarController {
     
     var universalShadowImage: UIImage? {
         get {
@@ -118,7 +118,7 @@ public extension NormalTabBarController {
     
 }
 
-extension NormalTabBarController {
+extension ConeTabBarController {
     
     
     fileprivate func configerTabBar() {
