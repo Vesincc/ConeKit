@@ -153,6 +153,7 @@ extension ConeNavigationController {
         if isHideNavigationBarBackground {
             setNavigationBarBarBackgroundHide()
         }
+        
     }
     
     fileprivate func setNavigationBarBarBackgroundHide() {
