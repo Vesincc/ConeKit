@@ -62,14 +62,14 @@ class ContainerContentView<SubType: UIView>: UIView, ContainerArrangeProtocol {
         if let button = view as? UIButton {
             button.setTitle(title, for: .normal)
             if button.allTargets.isEmpty {
-                button.addTarget(self, action: #selector(buttonAction(_:)), for: .touchUpInside)
+                button.addTarget(ContainerContentView<SubType>.self, action: #selector(buttonAction(_:)), for: .touchUpInside)
             }
         } else {
             if let label = view as? UILabel {
                 label.text = title
             }
             if (view.gestureRecognizers ?? []).isEmpty {
-                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction(_:)))
+                let tapGesture = UITapGestureRecognizer(target: ContainerContentView<SubType>.self, action: #selector(tapAction(_:)))
                 view.addGestureRecognizer(tapGesture)
             }
         }

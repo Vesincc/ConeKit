@@ -8,14 +8,14 @@
 import Foundation
 
 public class NetworkParamsEncryptPlugin {
-    public init(encryptBlock: @escaping ([String : Any]) -> [String : Any], decryptBlock: @escaping (Data, Bool) -> [String : Any]) {
+    public init(encryptBlock: @escaping ([String : Any], TargetType) -> [String : Any], decryptBlock: @escaping (Data, TargetType) -> [String : Any]) {
         self.encryptBlock = encryptBlock
         self.decryptBlock = decryptBlock
     }
 
-    public let encryptBlock: ([String : Any]) -> [String : Any]
+    public let encryptBlock: ([String : Any], TargetType) -> [String : Any]
     
-    public let decryptBlock: (Data, Bool) -> [String : Any]
+    public let decryptBlock: (Data, TargetType) -> [String : Any]
 }
  
 extension NetworkParamsEncryptPlugin: PluginType {
@@ -26,19 +26,19 @@ extension NetworkParamsEncryptPlugin: PluginType {
         }
         switch target.task {
         case .requestParameters(parameters: let params, encoding: let encoding):
-            let encrypted = try? request.encoded(parameters: encryptBlock(params), parameterEncoding: encoding)
+            let encrypted = try? request.encoded(parameters: encryptBlock(params, target), parameterEncoding: encoding)
             return encrypted ?? request
         default:
             return request
         }
     }
     
-    public func process(_ result: Result<Response, NetworkError>, target: TargetType) -> Result<Response, NetworkError> { 
+    public func process(_ result: Result<Response, NetworkError>, target: TargetType) -> Result<Response, NetworkError> {
         switch target.task {
         case .requestParameters(parameters: _, encoding: _), .uploadMultipart(_):
             switch result {
             case .success(let response):
-                response.object = decryptBlock(response.data, target.isSignAvailable)
+                response.object = decryptBlock(response.data, target)
                 return .success(response)
             case .failure(let error):
                 return .failure(error)
