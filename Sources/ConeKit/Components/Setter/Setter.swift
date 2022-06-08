@@ -25,6 +25,11 @@ public struct Setter<Subject> {
         }
     }
     
+    public func excute(_ callback: (Subject) -> ()) -> Setter<Subject> {
+        callback(self.subject)
+        return Setter(subject)
+    }
+    
     public func apply() {
     }
 }

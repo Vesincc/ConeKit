@@ -20,7 +20,7 @@ open class ConeTabBarController: UITabBarController {
         super.viewDidLayoutSubviews()
 
         createBadgeView()
-        updateBadgePosition() 
+        updateBadgePosition()
   
     }
 
@@ -59,6 +59,11 @@ public extension ConeTabBarController {
                 tabBar.backgroundImage = UIImage(color: .white, size: CGSize(width: kScreenWidth, height: 0))
                 tabBar.shadowImage = newValue
             }
+            if #available(iOS 15.0, *) {
+                tabBar.scrollEdgeAppearance = tabBar.standardAppearance
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     
@@ -73,10 +78,16 @@ public extension ConeTabBarController {
         set {
             if #available(iOS 13.0, *) {
                 tabBar.standardAppearance.stackedLayoutAppearance.normal.titleTextAttributes = newValue ?? [:]
+                tabBar.standardAppearance.inlineLayoutAppearance.normal.titleTextAttributes = newValue ?? [:]
             }
             tabBar.items?.forEach({ item in
                 item.setTitleTextAttributes(newValue, for: .normal)
             })
+            if #available(iOS 15.0, *) {
+                tabBar.scrollEdgeAppearance = tabBar.standardAppearance
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     
@@ -91,10 +102,16 @@ public extension ConeTabBarController {
         set {
             if #available(iOS 13.0, *) {
                 tabBar.standardAppearance.stackedLayoutAppearance.selected.titleTextAttributes = newValue ?? [:]
+                tabBar.standardAppearance.inlineLayoutAppearance.selected.titleTextAttributes = newValue ?? [:]
             }
             tabBar.items?.forEach({ item in
                 item.setTitleTextAttributes(newValue, for: .selected)
             })
+            if #available(iOS 15.0, *) {
+                tabBar.scrollEdgeAppearance = tabBar.standardAppearance
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     
@@ -113,6 +130,11 @@ public extension ConeTabBarController {
                 tabBar.barTintColor = newValue
                 tabBar.isTranslucent = false
             }
+            if #available(iOS 15.0, *) {
+                tabBar.scrollEdgeAppearance = tabBar.standardAppearance
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     
@@ -124,15 +146,11 @@ extension ConeTabBarController {
     fileprivate func configerTabBar() {
         if #available(iOS 13.0, *) {
             tabBar.standardAppearance = UITabBarAppearance()
+            tabBar.standardAppearance.backgroundEffect = nil
         } else {
             // Fallback on earlier versions
         }
          
-        if #available(iOS 15.0, *) {
-            tabBar.scrollEdgeAppearance = tabBar.standardAppearance
-        } else {
-            // Fallback on earlier versions
-        }
     }
     
     fileprivate func createBadgeView() {
@@ -197,7 +215,7 @@ public extension UITabBarItem {
         static var kIsHideBadge = "UITabBarItem.kIsHideBadge"
         static var kBadgeOffset = "UITabBarItem.kBadgeOffset"
         static var kTabBarButton = "UITabBarItem.kTabBarButton"
-    } 
+    }
     
     @IBInspectable var isEnabledBadge: Bool {
         get {

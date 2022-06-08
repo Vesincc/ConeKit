@@ -8,10 +8,33 @@
 import Foundation
 import UIKit
 
+public protocol ConeNavigationControllerCustomLeftActionProtocol: UIViewController {
+    
+    func leftItemImageEdgeInsets() -> UIEdgeInsets?
+    
+    func leftItemImage() -> UIImage?
+    
+    func leftItemAction()
+    
+}
+
+extension ConeNavigationControllerCustomLeftActionProtocol {
+    func leftItemImageEdgeInsets() -> UIEdgeInsets? {
+        return nil
+    }
+    
+    func leftItemImage() -> UIImage? {
+        return nil
+    }
+}
+
 public class ConeNavigationController: UINavigationController {
      
     /// 返回图片
     @IBInspectable public var backImage: UIImage?
+    
+    /// 导航了左边按钮的insets
+    public var backItemEdgeInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 10)
     
     /// 隐藏shadowImage
     @IBInspectable public var isHideShadowImage: Bool = false {
@@ -49,10 +72,17 @@ public class ConeNavigationController: UINavigationController {
     public override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         if children.count > 0 {
             willLeaveRootViewController?()
-            if let _ = backImage {
-                viewController.navigationItem.leftBarButtonItem = defaultBackLeftItem
+            if let vc = viewController as? ConeNavigationControllerCustomLeftActionProtocol, let image = vc.leftItemImage() {
+                viewController.navigationItem.leftBarButtonItem = defaultBackLeftItem(image: image, imageEdgeInsets: vc.leftItemImageEdgeInsets() ?? backItemEdgeInsets)
+            } else if let image = backImage {
+                viewController.navigationItem.leftBarButtonItem = defaultBackLeftItem(image: image, imageEdgeInsets: backItemEdgeInsets)
             }
             viewController.hidesBottomBarWhenPushed = true
+        } else {
+            // root
+            if let vc = viewController as? ConeNavigationControllerCustomLeftActionProtocol, let image = vc.leftItemImage() {
+                viewController.navigationItem.leftBarButtonItem = defaultBackLeftItem(image: image, imageEdgeInsets: vc.leftItemImageEdgeInsets() ?? backItemEdgeInsets)
+            }
         }
         super.pushViewController(viewController, animated: animated)
     }
@@ -162,25 +192,28 @@ extension ConeNavigationController {
         isHideShadowImage = true
     }
     
-    fileprivate var defaultBackLeftItem: UIBarButtonItem {
-        get {
-            let button = UIButton(type: .custom)
-            button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-            button.setImage(backImage, for: .normal)
-            button.setImage(backImage, for: .highlighted)
-            button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 10)
-            button.addTarget(self, action: #selector(popAction), for: .touchUpInside)
-            button.isExclusiveTouch = true
-            let custom = UIBarButtonItem.init(customView: button)
-            if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
-                button.layer.setAffineTransform(.init(rotationAngle: .pi))
-            }
-            return custom
-        }
+    fileprivate func defaultBackLeftItem(image: UIImage, imageEdgeInsets: UIEdgeInsets) -> UIBarButtonItem {
+        let button = Setter(UIButton())
+            .image(image, for: .normal)
+            .imageEdgeInsets(imageEdgeInsets)
+            .excute({ t in
+                t.addTarget(self, action: #selector(popAction), for: .touchUpInside)
+                if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
+                    t.layer.setAffineTransform(.init(rotationAngle: .pi))
+                }
+            })
+            .isExclusiveTouch(true)
+            .subject
+         
+        return UIBarButtonItem.init(customView: button)
     }
     
     @objc fileprivate func popAction() {
-        popViewController(animated: true)
+        if let vc = topViewController as? ConeNavigationControllerCustomLeftActionProtocol {
+            vc.leftItemAction()
+        } else {
+            popViewController(animated: true)
+        }
     }
     
 }
@@ -220,4 +253,4 @@ extension ConeNavigationController: UINavigationControllerDelegate {
         }
          
     }
-} 
+}
