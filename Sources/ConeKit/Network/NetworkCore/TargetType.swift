@@ -29,7 +29,7 @@ public protocol TargetType {
     
     var timeOut: TimeInterval { get }
     
-    var isSignAvailable: Bool { get }
+    var encryptAvailable: Bool { get }
     
 }
 

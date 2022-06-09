@@ -176,3 +176,45 @@ public extension String {
         return pre.evaluate(with: self)
     }
 }
+
+
+public extension String {
+    
+    func localize() -> String {
+        NSLocalizedString(self, comment: "")
+    }
+    
+    func localize(_ value: String) -> String {
+        String(format: localize(), value)
+    }
+    
+    func localize(_ value: Int) -> String {
+        String(format: localize(), value)
+    }
+    
+    func localize(_ value1: String,_ value2: String) -> String {
+        String(format: localize(), value1, value2)
+    }
+}
+
+public extension Array where Element == String {
+    
+    func merge(with str: String) -> String {
+        var res = ""
+        forEach { s in
+            if !s.isEmpty {
+                if res.isEmpty {
+                    res = s
+                } else {
+                    res.append(contentsOf: "\(str)\(s)")
+                }
+            }
+        }
+        return res
+    }
+    
+    var firstNotEmpty: String? {
+        first(where: { !$0.isEmpty })
+    }
+    
+}

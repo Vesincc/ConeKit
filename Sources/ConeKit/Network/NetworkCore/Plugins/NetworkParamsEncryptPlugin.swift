@@ -21,9 +21,6 @@ public class NetworkParamsEncryptPlugin {
 extension NetworkParamsEncryptPlugin: PluginType {
     
     public func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {
-        if !target.isSignAvailable {
-            return request
-        }
         switch target.task {
         case .requestParameters(parameters: let params, encoding: let encoding):
             let encrypted = try? request.encoded(parameters: encryptBlock(params, target), parameterEncoding: encoding)
@@ -34,17 +31,12 @@ extension NetworkParamsEncryptPlugin: PluginType {
     }
     
     public func process(_ result: Result<Response, NetworkError>, target: TargetType) -> Result<Response, NetworkError> {
-        switch target.task {
-        case .requestParameters(parameters: _, encoding: _), .uploadMultipart(_):
-            switch result {
-            case .success(let response):
-                response.object = decryptBlock(response.data, target)
-                return .success(response)
-            case .failure(let error):
-                return .failure(error)
-            }
-        default:
-            return result
+        switch result {
+        case .success(let response):
+            response.object = decryptBlock(response.data, target)
+            return .success(response)
+        case .failure(let error):
+            return .failure(error)
         }
     }
     
