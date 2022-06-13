@@ -34,7 +34,9 @@ public class ConeNavigationController: UINavigationController {
     @IBInspectable public var backImage: UIImage?
     
     /// 导航了左边按钮的insets
-    public var backItemEdgeInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 10)
+    public var backItemEdgeInsets: UIEdgeInsets = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ?
+    UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 10) :
+    UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -10)
     
     /// 隐藏shadowImage
     @IBInspectable public var isHideShadowImage: Bool = false {
