@@ -154,6 +154,7 @@ public extension UIView {
 }
 
 // MARK: - 本地化字符串
+// MARK: - UILabel
 public extension UILabel {
     @IBInspectable var localizedKey: String? {
         set {
@@ -162,8 +163,18 @@ public extension UILabel {
         }
         get { return text }
     }
+    
+    @IBInspectable var isAdjustsFontSizeToFitWidth: Bool {
+        get {
+            adjustsFontSizeToFitWidth
+        }
+        set {
+            adjustsFontSizeToFitWidth = newValue
+        }
+    }
 }
 
+// MARK: - UIButton
 public extension UIButton {
     @IBInspectable var localizedKey: String? {
         set {
@@ -171,6 +182,15 @@ public extension UIButton {
             setTitle(NSLocalizedString(newValue, comment: ""), for: .normal)
         }
         get { return titleLabel?.text }
+    }
+    
+    @IBInspectable var isAdjustsFontSizeToFitWidth: Bool {
+        get {
+            titleLabel?.adjustsFontSizeToFitWidth ?? false
+        }
+        set {
+            titleLabel?.adjustsFontSizeToFitWidth = newValue
+        }
     }
 }
 
