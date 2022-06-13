@@ -200,9 +200,6 @@ extension ConeNavigationController {
             .imageEdgeInsets(imageEdgeInsets)
             .excute({ t in
                 t.addTarget(self, action: #selector(popAction), for: .touchUpInside)
-                if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
-                    t.layer.setAffineTransform(.init(rotationAngle: .pi))
-                }
             })
             .isExclusiveTouch(true)
             .subject
