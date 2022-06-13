@@ -79,10 +79,12 @@ public extension ConeTabBarController {
             if #available(iOS 13.0, *) {
                 tabBar.standardAppearance.stackedLayoutAppearance.normal.titleTextAttributes = newValue ?? [:]
                 tabBar.standardAppearance.inlineLayoutAppearance.normal.titleTextAttributes = newValue ?? [:]
+                tabBar.standardAppearance.compactInlineLayoutAppearance.normal.titleTextAttributes = newValue ?? [:]
+            } else {
+                tabBar.items?.forEach({ item in
+                    item.setTitleTextAttributes(newValue, for: .normal)
+                })
             }
-            tabBar.items?.forEach({ item in
-                item.setTitleTextAttributes(newValue, for: .normal)
-            })
             if #available(iOS 15.0, *) {
                 tabBar.scrollEdgeAppearance = tabBar.standardAppearance
             } else {
@@ -103,10 +105,12 @@ public extension ConeTabBarController {
             if #available(iOS 13.0, *) {
                 tabBar.standardAppearance.stackedLayoutAppearance.selected.titleTextAttributes = newValue ?? [:]
                 tabBar.standardAppearance.inlineLayoutAppearance.selected.titleTextAttributes = newValue ?? [:]
+                tabBar.standardAppearance.compactInlineLayoutAppearance.selected.titleTextAttributes = newValue ?? [:]
+            } else {
+                tabBar.items?.forEach({ item in
+                    item.setTitleTextAttributes(newValue, for: .selected)
+                })
             }
-            tabBar.items?.forEach({ item in
-                item.setTitleTextAttributes(newValue, for: .selected)
-            })
             if #available(iOS 15.0, *) {
                 tabBar.scrollEdgeAppearance = tabBar.standardAppearance
             } else {
