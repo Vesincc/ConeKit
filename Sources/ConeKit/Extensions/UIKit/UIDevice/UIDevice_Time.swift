@@ -45,7 +45,7 @@ public extension UIDevice {
                 }
             }
         }
-        timer.schedule(deadline: .now(), repeating: spacing, leeway: .milliseconds(300))
+        timer.schedule(deadline: .now(), repeating: spacing, leeway: .milliseconds(100))
         timer.resume()
     }
     
