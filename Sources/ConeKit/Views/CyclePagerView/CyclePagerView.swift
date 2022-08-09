@@ -558,7 +558,7 @@ extension CyclePagerView: UIScrollViewDelegate {
         if let layoutConfig = layoutConfig {
             switch layoutConfig.scrollDirection {
             case .horizontal:
-                if abs(velocity.x) < 0.35 || !beginDragIndexSection.isEqual(indexSection) {
+                if abs(velocity.x) < 0.25 || !beginDragIndexSection.isEqual(indexSection) {
                     point.x = caculateOffsetX(at: indexSection)
                     targetContentOffset.pointee = point
                     return
@@ -571,7 +571,7 @@ extension CyclePagerView: UIScrollViewDelegate {
                 point.x = caculateOffsetX(at: indexSection)
                 targetContentOffset.pointee = point
             case .vertical:
-                if abs(velocity.y) < 0.35 || !beginDragIndexSection.isEqual(indexSection) {
+                if abs(velocity.y) < 0.25 || !beginDragIndexSection.isEqual(indexSection) {
                     point.y = caculateOffsetY(at: indexSection)
                     targetContentOffset.pointee = point
                     return
