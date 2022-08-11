@@ -11,31 +11,10 @@ open class ConeTabBarController: UITabBarController {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        
-        cinfigerTabbarItem()
+         
         configerTabBar()
     }
-
-    open override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        createBadgeView()
-        updateBadgePosition()
-  
-    }
-
-    open override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        updateBadgePosition()
-    }
-
-    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: nil) { [weak self] (context) in
-            self?.updateBadgePosition()
-        }
-    }
-
+ 
     open override var preferredStatusBarStyle: UIStatusBarStyle {
         selectedViewController?.preferredStatusBarStyle ?? .default
     }
@@ -156,140 +135,7 @@ extension ConeTabBarController {
         }
          
     }
-    
-    fileprivate func createBadgeView() {
-        tabBar.items?.forEach({ (item) in
-            if item.isEnabled && item.badgeView == nil {
-                let size = item.badgeSize
-                item.badgeView = UIView.init(frame: .init(origin: .zero, size: size))
-                
-                item.badgeView?.backgroundColor = item.badgeColor
-                item.badgeView?.layer.cornerRadius = min(size.width, size.height) / 2.0
-            }
-        })
-    }
-    
-    fileprivate func updateBadgePosition() {
-        for item in tabBar.items ?? [] {
-            if item.isEnabledBadge {
-                item.tabBarButton?.subviews.forEach({ (tempView) in
-                    if tempView.classForCoder == NSClassFromString("_UIBadgeView") {
-                        tempView.isHidden = true
-                        if let badgeView = item.badgeView {
-                            badgeView.isHidden = item.isHideBadge
-                            if badgeView.superview == nil {
-                                item.tabBarButton?.addSubview(badgeView)
-                            }
-                            let defaultSize = tempView.frame.size
-                            let leftBottom = CGPoint.init(x: tempView.frame.origin.x, y: tempView.frame.origin.y + defaultSize.height)
-                            
-                            let offset = item.badgeOffset
-                            let badgeSize = item.badgeSize
-                            badgeView.frame.origin = .init(x: leftBottom.x + offset.x, y: leftBottom.y - badgeSize.height + offset.y)
-                        }
-                    }
-                })
-            }
-        }
-    }
-    
-    fileprivate func cinfigerTabbarItem() {
-        
-        var index = 1000
-        tabBar.subviews.forEach { (view) in
-            if view.classForCoder == NSClassFromString("UITabBarButton") {
-                view.tag = index
-                index += 1
-            }
-        }
-        
-        for (index, item) in (tabBar.items ?? []).enumerated() {
-            item.tabBarButton = tabBar.viewWithTag(index + 1000)
-        }
-    }
+     
     
 }
-
-public extension UITabBarItem {
-    
-    fileprivate enum AssociatedKeysByHQ {
-        static var kBadgeView = "UITabBarItem.kBadgeView"
-        static var kBadgeSize = "UITabBarItem.kBadgeSize"
-        static var kBadgeColor = "UITabBarItem.kBadgeColor"
-        static var kIsHideBadge = "UITabBarItem.kIsHideBadge"
-        static var kBadgeOffset = "UITabBarItem.kBadgeOffset"
-        static var kTabBarButton = "UITabBarItem.kTabBarButton"
-    }
-    
-    @IBInspectable var isEnabledBadge: Bool {
-        get {
-            badgeValue == " "
-        }
-        set {
-            badgeValue = newValue ? " " : ""
-        }
-    }
-    
-    @IBInspectable var badgeView: UIView? {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeysByHQ.kBadgeView) as? UIView
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeysByHQ.kBadgeView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-    @IBInspectable var badgeSize: CGSize {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeysByHQ.kBadgeSize) as? CGSize ?? .init(width: 4, height: 4)
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeysByHQ.kBadgeSize, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-    @IBInspectable var badgeColor: UIColor? {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeysByHQ.kBadgeColor) as? UIColor
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeysByHQ.kBadgeColor, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-    @IBInspectable var badgeOffset: CGPoint {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeysByHQ.kBadgeOffset) as? CGPoint ?? .zero
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeysByHQ.kBadgeOffset, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-    @IBInspectable var isHideBadge: Bool {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeysByHQ.kIsHideBadge) as? Bool ?? false
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeysByHQ.kIsHideBadge, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            badgeView?.isHidden = newValue
-        }
-    }
-    
-    private class ViewWrap: NSObject {
-        internal init(view: UIView? = nil) {
-            self.view = view
-        }
-        weak var view: UIView?
-    }
-    
-    fileprivate var tabBarButton: UIView? {
-        get {
-            (objc_getAssociatedObject(self, &AssociatedKeysByHQ.kTabBarButton) as? ViewWrap)?.view
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeysByHQ.kTabBarButton, ViewWrap(view: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-}
+ 

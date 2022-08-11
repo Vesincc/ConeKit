@@ -31,10 +31,10 @@ extension ConeNavigationControllerCustomLeftActionProtocol {
 open class ConeNavigationController: UINavigationController {
      
     /// 返回图片
-    @IBInspectable public var backImage: UIImage?
+    @IBInspectable open var backImage: UIImage?
     
     /// 导航了左边按钮的insets
-    public var backItemEdgeInsets: UIEdgeInsets = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ?
+    open var backItemEdgeInsets: UIEdgeInsets = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight ?
     UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 10) :
     UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -10)
     
@@ -56,14 +56,14 @@ open class ConeNavigationController: UINavigationController {
         }
     }
     
-    public var isEnableColorAndHide = true
+    open var isEnableColorAndHide = true
     
     /// 将要离开root
     public var willLeaveRootViewController: (() -> ())?
     /// 进入root
     public var didEnterRootViewController: (() -> ())?
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
         interactivePopGestureRecognizer?.delegate = self 
@@ -71,7 +71,7 @@ open class ConeNavigationController: UINavigationController {
         configerNavigationBar()
     }
     
-    public override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+    open override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         if children.count > 0 {
             willLeaveRootViewController?()
             if let vc = viewController as? ConeNavigationControllerCustomLeftActionProtocol, let image = vc.leftItemImage() {
@@ -89,7 +89,7 @@ open class ConeNavigationController: UINavigationController {
         super.pushViewController(viewController, animated: animated)
     }
     
-    public override var preferredStatusBarStyle: UIStatusBarStyle {
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
         topViewController?.preferredStatusBarStyle ?? .default
     }
 }
