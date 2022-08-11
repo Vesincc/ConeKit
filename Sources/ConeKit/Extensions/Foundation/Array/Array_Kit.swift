@@ -40,7 +40,7 @@ public extension Array where Element: Hashable {
     }
 }
 
-extension Array where Element == String {
+public extension Array where Element == String {
     
     func split(with str: String) -> String {
         var temp = ""
