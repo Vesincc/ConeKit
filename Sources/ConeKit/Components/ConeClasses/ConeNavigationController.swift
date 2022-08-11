@@ -28,7 +28,7 @@ extension ConeNavigationControllerCustomLeftActionProtocol {
     }
 }
 
-public class ConeNavigationController: UINavigationController {
+open class ConeNavigationController: UINavigationController {
      
     /// 返回图片
     @IBInspectable public var backImage: UIImage?
