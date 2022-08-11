@@ -39,3 +39,32 @@ public extension Array where Element: Hashable {
         return seen.count != 0
     }
 }
+
+extension Array where Element == String {
+    
+    func split(with str: String) -> String {
+        var temp = ""
+        self.forEach { t in
+            if !t.isEmpty {
+                if temp.isEmpty {
+                    temp += t
+                } else {
+                    temp += "\(str)\(t)"
+                }
+            }
+        }
+        return temp
+    }
+    
+    func firstNoEmptyValue() -> String {
+        var res = ""
+        for t in self {
+            if !t.isEmpty {
+                res = t
+                break
+            }
+        }
+        return res
+    }
+    
+}
