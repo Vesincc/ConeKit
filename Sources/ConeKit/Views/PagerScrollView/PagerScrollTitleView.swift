@@ -152,6 +152,7 @@ public extension PagerScrollTitleView {
         }
         
         self.titles = titles
+        lineView.backgroundColor = indicatorColor
         collectionViewLayout.minimumLineSpacing = titleSpacing
         collectionViewLayout.minimumInteritemSpacing = titleSpacing
         reloadData()
