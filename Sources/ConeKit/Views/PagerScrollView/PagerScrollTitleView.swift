@@ -94,6 +94,7 @@ public class PagerScrollTitleView: UIView {
             .showsHorizontalScrollIndicator(false)
             .showsVerticalScrollIndicator(false)
             .bounces(false)
+            .backgroundColor(.clear)
             .subject
     }()
 

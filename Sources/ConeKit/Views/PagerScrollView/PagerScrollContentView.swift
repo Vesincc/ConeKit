@@ -50,6 +50,7 @@ public class PagerScrollContentView: UIView {
             .excute({ c in
                 c.registerCellClass(PagerScrollContentCell.self)
             })
+            .backgroundColor(.clear)
             .subject
     }()
     
