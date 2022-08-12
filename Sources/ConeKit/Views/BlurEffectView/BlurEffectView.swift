@@ -8,43 +8,28 @@
 import Foundation
 import UIKit
 
-public class BlurEffectView : UIVisualEffectView {
-    
-    @IBInspectable var intensity: CGFloat = 0.1
-    
-    private var theEffect: UIVisualEffect?
-    private var animator: UIViewPropertyAnimator?
-      
-    override init(effect: UIVisualEffect?) {
-        theEffect = effect
-        super.init(effect: nil)
+fileprivate extension UIBlurEffect {
+    class func effect(with radius: CGFloat) -> UIBlurEffect? {
+        self.perform(NSSelectorFromString("effectWithBlurRadius:"), with: radius).takeUnretainedValue() as? UIBlurEffect
     }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        theEffect = self.effect
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(becomeActiveNotification), name: UIApplication.willEnterForegroundNotification, object: nil)
-        
-        self.effect = nil
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func becomeActiveNotification() {
-        draw(bounds)
-    }
-    
-    public override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        effect = nil
-        animator?.stopAnimation(true)
-        animator = UIViewPropertyAnimator(duration: 1, curve: .linear) { [unowned self] in
-            self.effect = theEffect
+}
+
+open class BlurEffectView : UIVisualEffectView {
+     
+    @IBInspectable var radius: CGFloat = 20 {
+        didSet {
+            self.effect = UIBlurEffect.effect(with: radius)
         }
-        animator?.fractionComplete = intensity
+    }
+     
+    public init(radius: CGFloat) {
+        self.radius = radius
+        super.init(effect: UIBlurEffect.effect(with: radius))
+    }
+    
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+         
     }
     
 }
