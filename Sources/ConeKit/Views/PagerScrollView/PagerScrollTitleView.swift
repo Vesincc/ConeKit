@@ -133,7 +133,7 @@ public class PagerScrollTitleView: UIView {
     }
 }
 
-extension PagerScrollTitleView {
+public extension PagerScrollTitleView {
     
     func loadTitles(titles: [String]) {
         if isFullItems {

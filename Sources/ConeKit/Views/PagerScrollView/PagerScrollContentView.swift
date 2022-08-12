@@ -7,18 +7,18 @@
 
 import UIKit 
 
-protocol PagerScrollContentViewDelegate : AnyObject {
+public protocol PagerScrollContentViewDelegate : AnyObject {
     func contentView(_ contentView: PagerScrollContentView, scrollingFromIndex fromIndex: Int, toIndex: Int, progress: Float)
     func contentView(_ contentView: PagerScrollContentView, didScrollTo index: Int)
 }
-extension PagerScrollContentViewDelegate {
+public extension PagerScrollContentViewDelegate {
     func contentView(_ contentView: PagerScrollContentView, scrollingFromIndex fromIndex: Int, toIndex: Int, progress: Float) {}
     func contentView(_ contentView: PagerScrollContentView, didScrollTo index: Int) {}
 }
 
 public class PagerScrollContentView: UIView {
     
-    weak var delegate: PagerScrollContentViewDelegate?
+    public weak var delegate: PagerScrollContentViewDelegate?
     
     private var currentIndex: Int = 0  
     
