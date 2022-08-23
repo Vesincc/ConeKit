@@ -13,6 +13,7 @@ public enum NormalAlertStyle {
     case pop
     case sheetBottom
     case sheetRight
+    case sheetTop
 }
 
 public protocol NormalAlertProtocol: UIViewController {
@@ -45,6 +46,8 @@ public extension NormalAlertProtocol {
             showWithSheetBottom(parent: parent)
         case .sheetRight:
             showWithSheetRight(parent: parent)
+        case .sheetTop:
+            showWithSheetTop(parent: parent)
         }
         
     }
@@ -59,6 +62,8 @@ public extension NormalAlertProtocol {
             hideWithSheetBottom(completion: completion)
         case .sheetRight:
             hideWithSheetRight(completion: completion)
+        case .sheetTop:
+            hideWithSheetTop(completion: completion)
         }
     }
 }
@@ -223,6 +228,35 @@ fileprivate extension NormalAlertProtocol {
         UIView.animate(withDuration: animationDuration, animations: {
             self.maskView.alpha = 0
             self.contentView.transform = .init(translationX: self.maskView.frame.maxX - self.contentView.frame.maxX + self.contentView.bounds.width, y: 0)
+        }) { (finished) in
+            if finished {
+                self.dismiss(animated: false, completion: completion)
+            }
+        }
+    }
+    
+}
+
+// MARK: - NormalAlertStyle sheetTop
+fileprivate extension NormalAlertProtocol {
+    
+    func showWithSheetTop(parent: UIViewController) {
+        alertAnimation = { [weak self] in
+            guard let self = self else { return }
+            self.maskView.alpha = 0
+            self.contentView.transform = .init(translationX: 0, y: -self.contentView.frame.origin.y)
+            UIView.animate(withDuration: self.animationDuration) {
+                self.maskView.alpha = 1
+                self.contentView.transform = .identity
+            }
+        }
+        parent.present(self, animated: false, completion: nil)
+    }
+    
+    func hideWithSheetTop(completion: (() -> Void)?) {
+        UIView.animate(withDuration: animationDuration, animations: {
+            self.maskView.alpha = 0
+            self.contentView.transform = .init(translationX: 0, y: -self.contentView.frame.origin.y)
         }) { (finished) in
             if finished {
                 self.dismiss(animated: false, completion: completion)
