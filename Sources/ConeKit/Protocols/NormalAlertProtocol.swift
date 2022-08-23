@@ -244,7 +244,7 @@ fileprivate extension NormalAlertProtocol {
         alertAnimation = { [weak self] in
             guard let self = self else { return }
             self.maskView.alpha = 0
-            self.contentView.transform = .init(translationX: 0, y: -self.contentView.frame.origin.y)
+            self.contentView.transform = .init(translationX: 0, y: self.maskView.frame.minY - self.contentView.frame.minY - self.contentView.frame.height)
             UIView.animate(withDuration: self.animationDuration) {
                 self.maskView.alpha = 1
                 self.contentView.transform = .identity
@@ -256,7 +256,7 @@ fileprivate extension NormalAlertProtocol {
     func hideWithSheetTop(completion: (() -> Void)?) {
         UIView.animate(withDuration: animationDuration, animations: {
             self.maskView.alpha = 0
-            self.contentView.transform = .init(translationX: 0, y: -self.contentView.frame.origin.y)
+            self.contentView.transform = .init(translationX: 0, y: self.maskView.frame.minY - self.contentView.frame.minY - self.contentView.frame.height)
         }) { (finished) in
             if finished {
                 self.dismiss(animated: false, completion: completion)
